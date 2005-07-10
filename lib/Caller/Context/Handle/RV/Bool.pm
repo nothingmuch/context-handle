@@ -1,0 +1,38 @@
+#!/usr/bin/perl
+
+package Caller::Context::Handle::RV::Bool;
+use base qw/Caller::Context::Handle::RV::Scalar/;
+
+use strict;
+use warnings;
+
+sub new {
+	my $pkg = shift;
+	my $code = shift;
+
+	# although this does enforce boolean context,
+	# it doesn't return the actual value.
+	# this probably doesn't matter, since you can't
+	# get anything back from a boolean context'd expr.
+	$pkg->SUPER::new(sub { &$code ? 1 : "" })
+}
+
+__PACKAGE__;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Caller::Context::Handle::RV::Bool - 
+
+=head1 SYNOPSIS
+
+	use Caller::Context::Handle::RV::Bool;
+
+=head1 DESCRIPTION
+
+=cut
+
+
