@@ -5,10 +5,12 @@ package Caller::Context::Handle::RV::Void;
 use strict;
 use warnings;
 
+use Sub::Uplevel;
+
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-	&$code;
+	uplevel 1, $code;
 	bless [ ], $pkg;
 }
 

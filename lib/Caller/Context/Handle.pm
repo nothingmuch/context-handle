@@ -9,10 +9,17 @@ use warnings;
 use Want ();
 use Carp qw/croak/;
 
+use Sub::Uplevel;
+
 use Caller::Context::Handle::RV::Scalar;
 use Caller::Context::Handle::RV::Void;
 use Caller::Context::Handle::RV::List;
 use Caller::Context::Handle::RV::Bool;
+use Caller::Context::Handle::RV::RefHash;
+use Caller::Context::Handle::RV::RefArray;
+use Caller::Context::Handle::RV::RefScalar;
+use Caller::Context::Handle::RV::RefCode;
+use Caller::Context::Handle::RV::RefObject;
 
 BEGIN {
 	our @EXPORT_OK = qw/context_sensitive/;
@@ -29,6 +36,7 @@ sub new {
 	my $caller_level = @_ ? 1 + shift : 1;
 
 	my $self = bless {
+		uplevel => $caller_level,
 		want_reftype => Want::_wantref($caller_level),
 		want_count => Want::want_count($caller_level),
 		want_arity => Want::wantarray_up($caller_level),
@@ -100,7 +108,7 @@ sub mk_rv_container {
 	my $code = shift;
 
 	my $subclass = $self->rv_subclass;
-	return "Caller::Context::Handle::RV::$subclass"->new($code);
+	uplevel $self->{uplevel} + 2, sub { "Caller::Context::Handle::RV::$subclass"->new($code) };
 }
 
 sub eval {

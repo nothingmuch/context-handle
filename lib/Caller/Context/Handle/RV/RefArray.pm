@@ -6,11 +6,13 @@ use base qw/Caller::Context::Handle::RV::Scalar/;
 use strict;
 use warnings;
 
+use Sub::Uplevel;
+
 sub new {
 	my $pkg = shift;
 	my  $code = shift;
 	
-	$pkg->SUPER::new(sub { \@{ &$code } });
+	$pkg->SUPER::new(sub { \@{ uplevel 1, $code } });
 }
 
 __PACKAGE__;

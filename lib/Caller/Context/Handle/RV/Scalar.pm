@@ -5,10 +5,12 @@ package Caller::Context::Handle::RV::Scalar;
 use strict;
 use warnings;
 
+use Sub::Uplevel;
+
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-	my $val = &$code;
+	my $val = uplevel 1, $code;
 	bless \$val, $pkg;
 }
 
