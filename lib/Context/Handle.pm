@@ -287,6 +287,10 @@ Glob assignment context
 
 Lvalue assignment
 
+=item *
+
+use L<Sub::Uplevel> to hide the wrapping
+
 =back
 
 =head1 ACKNOWLEGMENTS
