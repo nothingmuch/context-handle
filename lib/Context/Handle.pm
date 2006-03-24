@@ -44,10 +44,8 @@ sub new {
 		want_wantarray => Want::wantarray_up($caller_level),
 		want_bool => Want::want_boolean($caller_level),
 		want_assign => [ Want::_wantassign( $caller_level + 1 ) ],
+		want_lvalue => Want::want_lvalue( $caller_level ),
 	}, $pkg;
-
-	croak "I can't wrap around lvalues yet"
-		if Want::want_lvalue($caller_level);
 
 	$self->eval( $code) ;
 
