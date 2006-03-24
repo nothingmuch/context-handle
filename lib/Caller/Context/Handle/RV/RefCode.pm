@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 sub new {
-	die "TODO: Someone with B::Fu should write this."
+	die "TODO: Someone with B:: fu should write this."
 }
 
 __PACKAGE__;
