@@ -44,7 +44,7 @@ sub new {
 		want_assign => [ Want::_wantassign( $caller_level + 1 ) ],
 	}, $pkg;
 
-	croak "I can't wrap around lvalues"
+	croak "I can't wrap around lvalues yet"
 		if Want::want_lvalue($caller_level);
 
 	$self->eval( $code) ;
