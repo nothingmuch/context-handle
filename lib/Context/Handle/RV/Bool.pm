@@ -14,7 +14,7 @@ sub new {
 	# it doesn't return the actual value.
 	# this probably doesn't matter, since you can't
 	# get anything back from a boolean context'd expr.
-	$pkg->SUPER::new(sub { $code->() ? 1 : "" })
+	$pkg->SUPER::new( sub { $code->() ? 1 : "" } )
 }
 
 __PACKAGE__;

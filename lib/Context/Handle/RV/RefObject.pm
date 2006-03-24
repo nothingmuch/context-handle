@@ -9,8 +9,9 @@ use warnings;
 sub new {
 	my $class = shift;
 	my $code = shift;
+
 	my $nop = sub { $_[0] };
-	$class->SUPER::new(sub { $code->()->$nop });
+	$class->SUPER::new( sub { $code->()->$nop } );
 }
 
 __PACKAGE__;
