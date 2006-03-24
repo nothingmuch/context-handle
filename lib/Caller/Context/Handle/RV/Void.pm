@@ -17,19 +17,3 @@ sub value { undef }
 __PACKAGE__;
 
 __END__
-
-=pod
-
-=head1 NAME
-
-Caller::Context::Handle::RV::Void - 
-
-=head1 SYNOPSIS
-
-	use Caller::Context::Handle::RV::Void;
-
-=head1 DESCRIPTION
-
-=cut
-
-

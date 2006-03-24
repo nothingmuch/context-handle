@@ -14,19 +14,3 @@ sub new {
 __PACKAGE__;
 
 __END__
-
-=pod
-
-=head1 NAME
-
-Caller::Context::Handle::RV::RefScalar - 
-
-=head1 SYNOPSIS
-
-	use Caller::Context::Handle::RV::RefScalar;
-
-=head1 DESCRIPTION
-
-=cut
-
-

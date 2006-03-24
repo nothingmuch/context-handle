@@ -20,19 +20,3 @@ sub value {
 __PACKAGE__;
 
 __END__
-
-=pod
-
-=head1 NAME
-
-Caller::Context::Handle::RV::Scalar - 
-
-=head1 SYNOPSIS
-
-	use Caller::Context::Handle::RV::Scalar;
-
-=head1 DESCRIPTION
-
-=cut
-
-
