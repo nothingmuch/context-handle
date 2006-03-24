@@ -1,6 +1,11 @@
 #!/usr/bin/perl
 
 package Caller::Context::Handle;
+use base qw/Exporter/;
+
+use strict;
+use warnings;
+
 use Want ();
 use Carp qw/croak/;
 
@@ -9,14 +14,19 @@ use Caller::Context::Handle::RV::Void;
 use Caller::Context::Handle::RV::List;
 use Caller::Context::Handle::RV::Bool;
 
-use strict;
-use warnings;
+BEGIN {
+	our @EXPORT_OK = qw/context_sensitive/;
+}
+
+sub context_sensitive (&) {
+	my $code = shift;
+	__PACKAGE__->new( $code, 1 );
+}
 
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-
-	my $caller_level = 1;
+	my $caller_level = @_ ? 1 + shift : 1;
 
 	my $self = bless {
 		want_reftype => Want::_wantref($caller_level),
@@ -28,7 +38,7 @@ sub new {
 	croak "I can't wrap around lvalues"
 		if Want::want_lvalue($caller_level);
 
-	$self->eval($code);
+	$self->eval( $code) ;
 
 	$self;
 }
