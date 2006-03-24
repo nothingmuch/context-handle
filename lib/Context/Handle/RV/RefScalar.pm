@@ -8,9 +8,9 @@ use warnings;
 use Sub::Uplevel;
 
 sub new {
-	my $self = shift;
+	my $class = shift;
 	my $code = shift;
-	$pkg->SUPER::new(sub { \${ uplevel 1, $code } });
+	$class->SUPER::new(sub { \${ uplevel 1, $code } });
 }
 
 __PACKAGE__;
