@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle::RV::Scalar;
+package Context::Handle::RV::List;
 
 use strict;
 use warnings;
@@ -10,13 +10,12 @@ use Sub::Uplevel;
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-	my $val = uplevel 1, $code;
-	bless \$val, $pkg;
+	bless [ uplevel 1, $code ], $pkg;
 }
 
 sub value {
 	my $self = shift;
-	$$self;
+	@$self;
 }
 
 __PACKAGE__;

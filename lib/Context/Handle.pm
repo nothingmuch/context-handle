@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle;
+package Context::Handle;
 use base qw/Exporter/;
 
 use strict;
@@ -11,15 +11,15 @@ use Carp qw/croak/;
 
 use Sub::Uplevel;
 
-use Caller::Context::Handle::RV::Scalar;
-use Caller::Context::Handle::RV::Void;
-use Caller::Context::Handle::RV::List;
-use Caller::Context::Handle::RV::Bool;
-use Caller::Context::Handle::RV::RefHash;
-use Caller::Context::Handle::RV::RefArray;
-use Caller::Context::Handle::RV::RefScalar;
-use Caller::Context::Handle::RV::RefCode;
-use Caller::Context::Handle::RV::RefObject;
+use Context::Handle::RV::Scalar;
+use Context::Handle::RV::Void;
+use Context::Handle::RV::List;
+use Context::Handle::RV::Bool;
+use Context::Handle::RV::RefHash;
+use Context::Handle::RV::RefArray;
+use Context::Handle::RV::RefScalar;
+use Context::Handle::RV::RefCode;
+use Context::Handle::RV::RefObject;
 
 BEGIN {
 	our @EXPORT_OK = qw/context_sensitive/;
@@ -108,7 +108,7 @@ sub mk_rv_container {
 	my $code = shift;
 
 	my $subclass = $self->rv_subclass;
-	uplevel $self->{uplevel} + 2, sub { "Caller::Context::Handle::RV::$subclass"->new($code) };
+	uplevel $self->{uplevel} + 2, sub { "Context::Handle::RV::$subclass"->new($code) };
 }
 
 sub eval {
@@ -136,13 +136,13 @@ __END__
 
 =head1 NAME
 
-Caller::Context::Handle - A convenient way to link between your callers and callees.
+Context::Handle - A convenient way to link between your callers and callees.
 
 =head1 SYNOPSIS
 
-	use Caller::Context::Handle;
+	use Context::Handle;
 
-	my $h = Caller::Context::Handle->new(sub {
+	my $h = Context::Handle->new(sub {
 		$some_thing->method();
 	});
 

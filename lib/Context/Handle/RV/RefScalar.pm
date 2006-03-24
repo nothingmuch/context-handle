@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle::RV::RefScalar;
+package Context::Handle::RV::RefScalar;
 
 use strict;
 use warnings;

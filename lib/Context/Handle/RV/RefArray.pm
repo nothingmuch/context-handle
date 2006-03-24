@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle::RV::List;
+package Context::Handle::RV::RefArray;
+use base qw/Context::Handle::RV::Scalar/;
 
 use strict;
 use warnings;
@@ -10,12 +11,8 @@ use Sub::Uplevel;
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-	bless [ uplevel 1, $code ], $pkg;
-}
-
-sub value {
-	my $self = shift;
-	@$self;
+	
+	$pkg->SUPER::new(sub { \@{ uplevel 1, $code } });
 }
 
 __PACKAGE__;

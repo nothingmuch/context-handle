@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle::RV::Bool;
-use base qw/Caller::Context::Handle::RV::Scalar/;
+package Context::Handle::RV::Bool;
+use base qw/Context::Handle::RV::Scalar/;
 
 use strict;
 use warnings;

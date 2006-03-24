@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-package Caller::Context::Handle::RV::RefCode;
+package Context::Handle::RV::RefCode;
 
 use strict;
 use warnings;

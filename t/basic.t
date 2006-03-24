@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-my $m; BEGIN { use_ok($m = "Caller::Context::Handle", "context_sensitive") }
+my $m; BEGIN { use_ok($m = "Context::Handle", "context_sensitive") }
 
 sub foo { $m->new(sub { wantarray ? "list" : "scalar" })->return }
 
