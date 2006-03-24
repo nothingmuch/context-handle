@@ -162,17 +162,28 @@ __END__
 
 =head1 NAME
 
-Context::Handle - A convenient way to link between your callers and callees.
+Context::Handle - A convenient context propagation proxy thingy.
 
 =head1 SYNOPSIS
 
-	use Context::Handle;
+	use Context::Handle qw/context_sensitive/;
 
-	my $h = Context::Handle->new(sub {
-		$some_thing->method();
-	});
+	sub wrapping {
+		my $rv = context_sensitive {
+			$some_thing->method(); # anything really
+		};
+
+		# you can do anything here
+
+		$rv->return; # returns the value in the right context
+
+		# not reached
+	}
 
 =head1 DESCRIPTION
+
+This module lets you delegate to another method and return the value without
+caring about context propagation.
 
 =cut
 
