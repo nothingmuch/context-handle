@@ -10,7 +10,7 @@ use Sub::Uplevel;
 sub new {
 	my $pkg = shift;
 	my $code = shift;
-	bless [ uplevel 1, $code ], $pkg;
+	bless [ $code->() ], $pkg;
 }
 
 sub value {

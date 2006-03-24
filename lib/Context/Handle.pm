@@ -37,10 +37,11 @@ sub new {
 
 	my $self = bless {
 		uplevel => $caller_level,
-		want_reftype => Want::_wantref($caller_level),
+		want_reftype => Want::_wantref( $caller_level + 1 ),
 		want_count => Want::want_count($caller_level),
-		want_arity => Want::wantarray_up($caller_level),
+		want_wantarray => Want::wantarray_up($caller_level),
 		want_bool => Want::want_boolean($caller_level),
+		want_assign => [ Want::_wantassign( $caller_level + 1 ) ],
 	}, $pkg;
 
 	croak "I can't wrap around lvalues"
@@ -53,22 +54,22 @@ sub new {
 
 sub bool {
 	my $self = shift;
-	$self->{want_bool};
+	$self->{want_bool} && defined $self->{want_wantarray};
 }
 
 sub void {
 	my $self = shift;
-	not defined $self->{want_arity};
+	not defined $self->{want_wantarray};
 }
 
 sub scalar {
 	my $self = shift;
-	!$self->void && !$self->list;
+	defined $self->{want_wantarray} && $self->{want_wantarray} == 0;
 }
 
 sub list {
 	my $self = shift;
-	$self->{want_arity};
+	$self->{want_wantarray};
 }
 
 sub refarray {
@@ -91,13 +92,31 @@ sub refobject {
 	$self->{want_reftype} eq 'OBJECT';
 }
 
+sub refcode {
+	my $self = shift;
+	$self->{want_reftype} eq 'CODE';
+}
+
+sub refglob {
+	my $self = shift;
+	$self->{want_reftype} eq 'GLOB';
+}
+
+
 sub rv_subclass {
 	my $self = shift;
 
-	$self->$_ and return ucfirst for qw/bool void list scalar/;
-	for (qw/RefArray RefScalar RefHash RefObject/) {
-		my $meth = lc;
-		return $_ if $self->$meth;
+	if ( $self->scalar ) {
+		for (qw/RefArray RefScalar RefHash RefObject RefCode RefGlob/) {
+			my $meth = lc;
+			return $_ if $self->$meth;
+		}
+
+		return "Bool" if $self->bool;
+
+		return "Scalar";
+	} else {
+		$self->$_ and return ucfirst for qw/void list/;
 	}
 
 	die "dunno how to do this context.";
@@ -108,7 +127,7 @@ sub mk_rv_container {
 	my $code = shift;
 
 	my $subclass = $self->rv_subclass;
-	uplevel $self->{uplevel} + 2, sub { "Context::Handle::RV::$subclass"->new($code) };
+	"Context::Handle::RV::$subclass"->new($code);
 }
 
 sub eval {
@@ -123,10 +142,17 @@ sub rv_container {
 	$self->{rv_container};
 }
 
-sub return {
+sub value {
 	my $self = shift;
 	$self->rv_container->value;
 }
+
+sub return {
+	my $self = shift;
+	Want::double_return();
+	$self->value;
+}
+
 
 __PACKAGE__;
 

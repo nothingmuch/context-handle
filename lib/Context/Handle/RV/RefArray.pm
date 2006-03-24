@@ -11,8 +11,8 @@ use Sub::Uplevel;
 sub new {
 	my $class = shift;
 	my $code = shift;
-	
-	$class->SUPER::new(sub { \@{ uplevel 1, $code } });
+
+	$class->SUPER::new( sub { \@{ $code->() } } );
 }
 
 __PACKAGE__;
