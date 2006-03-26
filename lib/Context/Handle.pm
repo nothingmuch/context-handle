@@ -39,11 +39,11 @@ sub new {
 
 	my $self = bless {
 		uplevel => $caller_level,
-		want_reftype => Want::_wantref( $caller_level + 1 ),
+		want_reftype => Want::wantref( $caller_level + 1 ),
 		want_count => Want::want_count($caller_level),
 		want_wantarray => Want::wantarray_up($caller_level),
-		want_bool => Want::want_boolean($caller_level),
-		want_assign => [ Want::_wantassign( $caller_level + 1 ) ],
+		want_bool => Want::want_uplevel($caller_level, "BOOL"),
+		want_assign => [ Want::wantassign( $caller_level + 1 ) ],
 		want_lvalue => Want::want_lvalue( $caller_level ),
 	}, $pkg;
 
