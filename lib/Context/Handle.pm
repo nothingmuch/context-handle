@@ -272,16 +272,14 @@ All of these methods return boolean values, with respect to the
 
 =item *
 
-Return value arity count (this is how split knows when to stop returning values)
-
-=item *
-
 pseudoboolean context - the right side of && and the left side of || evaulate
 in boolean context, but still return a meaningful value.
 
 =item *
 
-Glob assignment context
+Glob assignment context. I'm not sure how to make the value propagate back once
+it's been assigned to the glob - it's hard to know what it is without
+inspecting the slots and that's kinda tricky.
 
 =item *
 
@@ -290,6 +288,12 @@ Lvalue assignment
 =item *
 
 use L<Sub::Uplevel> to hide the wrapping
+
+=item *
+
+context arity - L<Want>'s count stuff. This can probably be done using
+@list[0..$x] = (...), but might need to be emulated with eval. See
+C<perldoc -f split>.
 
 =back
 
