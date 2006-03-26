@@ -60,14 +60,12 @@ sub is_wrapped {
 
 {
 	my $scalar = is_wrapped("Scalar");
-	local $TODO = "want(BOOL) under wrapping";
 	is( $scalar, "scalar", "wrapped scalar yields scalar" );
 }
 
 
 foreach my $sub ( \&complex, \&noop_wrap, sub { is_wrapped("Scalar") } ) {
 	my $scalar = $sub->();
-	local $TODO = "want(BOOL) under wrapping" if $sub != \&complex;
 	is( $scalar, "scalar", "correct value in context");
 }
 
