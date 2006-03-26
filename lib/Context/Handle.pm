@@ -9,8 +9,6 @@ use warnings;
 use Want ();
 use Carp qw/croak/;
 
-use Sub::Uplevel;
-
 use Context::Handle::RV::Scalar;
 use Context::Handle::RV::Void;
 use Context::Handle::RV::List;
