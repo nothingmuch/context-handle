@@ -47,6 +47,7 @@ sub noop_wrap {
 sub is_wrapped {
 	my $rv = context_sensitive { complex() };
 	use Data::Dumper;
+	local $Test::Builder::Level = 2;
 	isa_ok( $rv->rv_container, "Context::Handle::RV::$_[0]" ) or warn Dumper($rv);
 	$rv->return;
 	fail("this should not be reached");
