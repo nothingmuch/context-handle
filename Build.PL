@@ -6,8 +6,9 @@ my $build = Module::Build->new(
 	license			   => 'perl',
 	module_name		   => 'Context::Handle',
 	requires		   => {
-		'Want' => '0.10',
-		'ok'   => 0,
+		perl => '5.6.1',
+		Want => '0.10',
+		ok   => 0,
 	},
 	create_readme => 1,
 	sign		  => 1,

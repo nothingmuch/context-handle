@@ -23,7 +23,7 @@ BEGIN {
 	our @EXPORT_OK = qw/context_sensitive/;
 }
 
-our $VERSION = "0.01_01";
+our $VERSION = "0.01";
 
 sub context_sensitive (&) {
 	my $code = shift;
