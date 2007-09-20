@@ -291,6 +291,23 @@ C<perldoc -f split>.
 
 =back
 
+=head1 CAVEATS
+
+=over 4
+
+=item *
+
+C<context_sensitive> must be passed an C<:lvalue> sub in order to work in
+lvalue context, and the current caller must also be marked as C<:lvalue>.
+
+	context_sensitive { ... }; # won't work
+
+	context_sensitive(\&lvalue_sub); # will work
+
+	context_sensitive(sub : lvalue { ... }); # will also work
+
+=back
+
 =head1 ACKNOWLEGMENTS
 
 Robin Houston for L<Want> and lots of help by email
