@@ -18,6 +18,7 @@ use Context::Handle::RV::RefArray;
 use Context::Handle::RV::RefScalar;
 use Context::Handle::RV::RefCode;
 use Context::Handle::RV::RefObject;
+use Context::Handle::RV::Assignment;
 
 BEGIN {
 	our @EXPORT_OK = qw/context_sensitive/;
@@ -25,15 +26,22 @@ BEGIN {
 
 our $VERSION = "0.02";
 
-sub context_sensitive (&) {
-	my $code = shift;
-	__PACKAGE__->new( $code, 1 );
+sub context_sensitive (&;@) {
+	my ( $code, @args ) = @_;
+	__PACKAGE__->new( $code, caller_level => 1, args => \@args );
 }
 
 sub new {
-	my $pkg = shift;
-	my $code = shift;
-	my $caller_level = @_ ? 1 + shift : 1;
+	my ( $pkg, $code, @params ) = @_;
+	my ($caller_level, $args);
+	if ( @params == 1 ) {
+		$caller_level = 1 + shift @params;
+		$args = [];
+	} else {
+		my %params = @params;
+		$caller_level = exists($params{caller_level}) ? $params{caller_level} + 1 : 1 ;
+		$args = $params{args} || [];
+	}
 
 	my $self = bless {
 		uplevel => $caller_level,
@@ -45,7 +53,7 @@ sub new {
 		want_lvalue => Want::want_lvalue( $caller_level ),
 	}, $pkg;
 
-	$self->eval( $code) ;
+	$self->eval( $code, args => $args );
 
 	$self;
 }
@@ -100,8 +108,22 @@ sub refglob {
 	$self->{want_reftype} eq 'GLOB';
 }
 
+sub lvalue {
+	my $self = shift;
+	$self->{want_lvalue};
+}
+
+sub assignment {
+	my $self = shift;
+	wantarray ? @{ $self->{want_assign} } : $self->{want_assign}[0];
+}
 
 sub rv_subclass {
+	my $self = shift;
+	return $self->lvalue ? "Assignment" : $self->rv_subclass_no_assignment;
+}
+
+sub rv_subclass_no_assignment {
 	my $self = shift;
 
 	if ( $self->scalar ) {
@@ -121,18 +143,16 @@ sub rv_subclass {
 }
 
 sub mk_rv_container {
-	my $self = shift;
-	my $code = shift;
-
-	my $subclass = $self->rv_subclass;
-	"Context::Handle::RV::$subclass"->new($code);
+	my ( $self, $code, %params ) = @_;
+	my $subclass = $params{subclass} || $self->rv_subclass;
+	my $args = $params{args} || [];
+	"Context::Handle::RV::$subclass"->new($code, $self, @$args);
 }
 
 sub eval {
-	my $self = shift;
-	my $code = shift;
+	my ( $self, $code, @args ) = @_;
 
-	$self->{rv_container} = $self->mk_rv_container($code);
+	$self->{rv_container} = $self->mk_rv_container($code, @args);
 }
 
 sub rv_container {

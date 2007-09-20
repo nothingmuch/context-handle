@@ -6,10 +6,9 @@ use strict;
 use warnings;
 
 sub new {
-	my $pkg = shift;
-	my $code = shift;
+	my ( $pkg, $code, $handle, @args ) = @_;
 
-	my $val = $code->();
+	my $val = $code->(@args);
 	bless \$val, $pkg;
 }
 
