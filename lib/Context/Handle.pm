@@ -281,10 +281,6 @@ inspecting the slots and that's kinda tricky.
 
 =item *
 
-Lvalue assignment
-
-=item *
-
 use L<Sub::Uplevel> to hide the wrapping
 
 =item *
